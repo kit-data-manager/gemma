@@ -8,11 +8,24 @@ Useful files:
 - `schema-for-xml-response.json` contains the schema to map the xml response. The mapping has been done according to the TEI, suggested by Germaine;
 - `mapping_functions.py` contains the functions needed to run the mapping of the metadata, in order to create a JSON document ready to be indexed by elasticSearch.
 
-## Installation and settings
+## Ubuntu installation and settings
 	apt-get update
 	apt-get install python3 python3-pip
 	pip3 install xmltodict wget
 	export PYTHONIOENCODING=UTF-8
+
+## MacOS installation and settings
+If not present, install Homebrew:
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+Then, install Python 3:
+	brew install python3
+Check whether Homebrew have already installed `pip` pointing to the Homebrew’d Python 3 for you:
+	which pip
+	which pip3
+If your `pip` already points to Python3:
+	pip install xmltodict wget
+Otherwise:
+	pip3 install xmltodict wget
 
 ## Explanation and instructions
 There are two codes: one to download all the manuscript metadata (i.e. the responses) from the episteme repo, the other to map the metadata according to the schema.
