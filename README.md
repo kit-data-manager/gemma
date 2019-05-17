@@ -16,15 +16,24 @@ Useful files:
 
 ## MacOS installation and settings
 If not present, install Homebrew:
+
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	
 Then, install Python 3:
+
 	brew install python3
+	
 Check whether Homebrew have already installed `pip` pointing to the Homebrew’d Python 3 for you:
+
 	which pip
 	which pip3
+	
 If your `pip` already points to Python3:
+
 	pip install xmltodict wget
+	
 Otherwise:
+
 	pip3 install xmltodict wget
 
 ## Explanation and instructions
