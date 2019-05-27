@@ -61,4 +61,72 @@ The output JSON files are named as the XML file + the extension `.elastic.json`,
 ## To be fixed in version 2:
 - manage nested dictionaries within lists
 - manage mandatory fields (the ones in the basic minimal schema)
-_ manage entries which have `None` in the XML response in a different way from missing entries
+- manage entries which have `None` in the XML response in a different way from missing entries
+- go beyond full-text search, starting e.g. from dates and dimensions
+
+# Elasticsearch
+
+To download, install and run an Elasticsearch instance, follow the instructions of the web page: https://www.elastic.co/downloads/elasticsearch
+
+## Indexing
+
+The code `elastic_indexing.py` allows to index all the manuscripts JSON files (by default) in a given folder, which must be provided.
+Addotional packages are needed:
+
+	pip3 install requests, elasticsearch
+
+To run it:
+
+	python3 elastic_indexing.py JSON_directory
+
+## Search using the Python code
+
+The code `elastic_indexing.py` already contains a function using the python elasticsearch client and an example of search. 
+An other option is to use Kibana. 
+
+## Seach using Kibana
+
+To download, install and run Kibana on top of your Elasticsearch instance, follow the instructions on the web page: https://www.elastic.co/downloads/kibana 
+
+To search all manuscripts, write on Kibana dashboard:
+
+	GET episteme/_search
+	{
+  	  "query": {
+    	    "match_all": { }
+	  }
+	}
+
+In the response, `hits.value` is the number of found hits: 
+
+	"hits" : {
+	  "total" : {
+	  "value" : 81,
+	  "relation" : "eq"
+	}
+
+To search by exact match of a word, write on Kibana dashboard:
+
+	GET episteme/_search
+	{
+	  "query": {
+	    "match": {
+	      "index.name.with.dots.if.nested": "word to match"
+	    }
+	  }
+	}
+
+To search by exact match of a sentence, write on Kibana dashboard:
+
+        GET episteme/_search
+        {
+          "query": {
+            "match_phrase": {
+              "index.name.with.dots.if.nested": "sentence to match"
+            }
+          }
+        }
+
+To select the index name, please consult the JSON schema `schema-for-xml-response.json`.
+It works also with Greek, special French and German letters. 
+
