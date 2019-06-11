@@ -60,6 +60,7 @@ The mapping cannot be granular for some entries, due to a couple of reasons:
 	- `hand note`
 	- `provenance event`
 	- `listBibl.bibl`
+
 To run the code:
 
 	python3 mapping.py $schema $input_folder $output_folder

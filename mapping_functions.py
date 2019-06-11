@@ -34,7 +34,11 @@ def find_path(path, diz):
     for pos in expanded_path:
         #print("pos", pos)
         if diz is None:
-            print("found a None element in {}. This entry will be not reported in the JSON.".format(pos))
+            print("Found a None element in {}. This entry will not be reported in the JSON.".format(pos))
+            break
+        if diz == "":
+            print("Found an empty string in {}. This entry will not be reported in the JSON".format(pos))
+            diz = None
             break
         if isinstance(diz, dict):
             diz = diz.get(pos)
