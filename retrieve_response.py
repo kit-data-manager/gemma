@@ -63,7 +63,7 @@ while True:
             print("Status of resource {} is {}".format(resourse, resourse['state']))
             continue
         assert(resourse['resourceType']['value'] == 'manuscriptMetadata'), "resourceType is not manuscriptMetadata"
-        download_file(manuscript_id)
+        download_file(manuscript_id, 'json')
 
     if len(data) == size:
         page += 1

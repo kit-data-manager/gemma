@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/product.schema.json",
+  "title": "Schema project",
+  "description": "Project mapping from json",
+  "type": "object",
+  "properties":{
+
+  "title":{
+    "path": "TEI.teiHeader.fileDesc.titleStmt.title",
+    "type": "string"
+  },
+  "person name":{
+    "path": "TEI.teiHeader.fileDesc.titleStmt.respStmt.persName.content",
+    "type": "string"
+  },
+  "person ID":{
+    "path": "TEI.teiHeader.fileDesc.titleStmt.respStmt.persName.xml:id",
+    "type": "string"
+  },
+  "licence information":{
+    "path": "TEI.teiHeader.fileDesc.publicationStmt.p",
+    "type": "string"
+  },
+  "source":{
+    "settlement":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.msIdentifier.settlement",
+      "type": "string"
+    },
+  "repository":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.msIdentifier.repository",
+      "type": "string"
+    },
+  "idno":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.msIdentifier.idno",
+      "type": "string"
+    }
+  },
+  "content":{
+    "locus":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.msContents.msItem.locus",
+      "type": "array"
+    },
+    "manuscript title":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.msContents.msItem.title",
+      "type": "string"
+    },
+    "filiation":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.msContents.msItem.filiation",
+      "type": "string"
+    }
+  },
+  "material":{
+    "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.physDesc.objectDesc.supportDesc.support.material",
+    "type": "string"
+  },
+  "dimensions":{
+    "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.physDesc.objectDesc.supportDesc.extent.dimensions",
+    "type" : "array"
+  },
+  "hand note":{
+    "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.physDesc.handDesc.handNote",
+    "type": "array"
+  },
+  "additions":{
+    "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.physDesc.additions.list",
+    "type": "array"
+  },
+  "origin":{
+    "original Place": {
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.history.origin.origPlace",
+      "type": "string"
+    },
+    "original Date":{
+      "from":{
+        "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.history.origin.origDate.from",
+        "type": "string"
+      },
+      "to":{
+        "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.history.origin.origDate.to",
+        "type": "string"
+      }
+    }
+  },
+  "provenance event":{
+    "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.history.provenance.listEvent.event",
+    "type": "array"
+  },
+  "listBibl":{
+    "head":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.additional.adminInfo.recordHist.source.listBibl.head",
+      "type": "string"
+    },
+    "bibl":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.additional.adminInfo.recordHist.source.listBibl.bibl",
+      "type": "array"
+    }
+  },
+  "change":{
+    "when":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.additional.adminInfo.recordHist.change.when",
+      "type": "string"
+    },
+    "content":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.additional.adminInfo.recordHist.change.content",
+      "type": "string"
+    },
+    "who":{
+      "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.additional.adminInfo.recordHist.change.who",
+      "type": "string"
+    }
+  },
+  "project description":{
+    "path": "TEI.teiHeader.encodingDesc.projectDesc.p",
+    "type": "array"
+   },
+  "graphic url":{
+    "path": "TEI.facsimile.graphic.url",
+    "type": "string"
+  }
+}
+}

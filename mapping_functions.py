@@ -50,9 +50,9 @@ def find_path(path, diz):
 
 
 def read_response(file):
-    if os.path.splitext(file)[1] == ".json":
+    if os.path.splitext(file)[1].startswith(".json"):
         resp = json2dict(file)
-    elif os.path.splitext(file)[1] == ".xml":
+    elif os.path.splitext(file)[1].startswith(".xml"):
         resp = xml2dict(file)
     return resp
 
