@@ -3,6 +3,8 @@ from elasticsearch import Elasticsearch
 import pprint
 
 directory = sys.argv[1]
+#directory = "./output/"
+
 doc_ext = ".json"
 
 res = requests.get('http://localhost:9200')
@@ -14,7 +16,8 @@ def index_all(directory, doc_ext):
     i = 1
     for filename in os.listdir(directory):
         if filename.endswith(doc_ext):
-            f = open(os.path.join(directory,filename))
+            print("Reading file {}".format(filename))
+            f = open(os.path.join(directory,filename), encoding="utf-8")
             content = f.read()
             es.index(index='textindex', ignore=400, doc_type='docket',id=i, body=json.loads(content))
             i += 1

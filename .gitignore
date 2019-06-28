@@ -113,3 +113,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.project
+.pydevproject
+.settings/
+output/
+episteme/
+output.json
+simple-schema.json
+simple.json

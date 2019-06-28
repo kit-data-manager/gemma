@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 
 import json
 import xmltodict
 import os
 import pprint
+
 
 def expand_path(path):
     """
@@ -30,22 +31,51 @@ def find_path(path, diz):
     :return: the value of the most nested dictionary, or None
     """
     expanded_path = expand_path(path)
-    #print("\n expanded path :{}".format(expanded_path))
+    print("\nFinding element in path {}".format(expanded_path))
     for pos in expanded_path:
-        #print("pos", pos)
-        if diz is None:
-            print("Found a None element in {}. This entry will not be reported in the JSON.".format(pos))
-            break
-        if diz == "":
-            print("Found an empty string in {}. This entry will not be reported in the JSON".format(pos))
+        if (diz is None) or (diz is ""):
+            print("No or empty dictionary returned from last iteration. Skipping from position '{}'.".format(pos))
             diz = None
             break
+
         if isinstance(diz, dict):
+            print("Accessing element '{}' in dictionary {}".format(pos, diz))
             diz = diz.get(pos)
         else:
-            print("{} is not a dictionary".format(diz))
-            diz = diz.get(pos)
-    #print("diz", diz)
+            print(" Current element {} is no dictionary. Trying to obtain a value for type {} and position '{}'.".format(diz, type(diz).__name__, pos))
+            index = 0
+            if isinstance(diz, list):
+                try:
+                    index = int(pos)
+                except ValueError:
+                  print('No index found, using index 0.') 
+                
+                try:
+                    diz = diz[index]
+                except IndexError:
+                    print(" Addressed index {} not found in list {}. Trying index 0.".format(index, diz))
+                    if(len(diz) != 0):
+                        diz = diz[0]
+                    else:
+                        print(" No element found in list {}. Setting value to None".format(diz))
+                        diz = None
+            else:
+                print(" {} is not a dictionary".format(diz))
+                try:
+                    diz = diz.get(pos)
+                except AttributeError:
+                    print(" No attribute {} found.".format(pos))
+    
+    if diz is None:
+        print("Nothing found at position {}. This entry will not be reported in the JSON.".format(pos))
+    else:
+        print("Element at position '{}' is {}.".format(pos, diz))
+    
+    if isinstance(diz, list):
+        print("Result {} is a list. Building string representation.".format(diz))
+        return str(diz)
+         
+    # return plain diz in all other cases  
     return diz
 
 
@@ -55,7 +85,6 @@ def read_response(file):
     elif os.path.splitext(file)[1].startswith(".xml"):
         resp = xml2dict(file)
     return resp
-
 
 
 def json2dict(file):
@@ -133,30 +162,47 @@ def __dict2list(v, resp, prefix, append_to):
     :param prefix: the prefix of the path. usually empty at the beginning
     :param append_to: the list where to append (defined in the external function)
     """
-    if isinstance(v, dict):
-        for k, v2 in v.items():
-            p2 = "{}{}.".format(prefix, k)
-            __dict2list(v2, resp, p2, append_to)
-
-    elif isinstance(v, list):
-        for i, v2 in enumerate(v):
-            p2 = "{}{}.".format(prefix, i)
-            __dict2list(v2, resp, p2, append_to)
-
-    else:
-        newprefix = prefix.rstrip('.')
-        leeve = (newprefix, v)
-        if os.path.splitext(newprefix)[1].lstrip('.') == "path":
-            #print("leeve con path ", leeve)
-            value = find_path(v, resp)
-            # skip the mapping of missing key:value pairs in the response
-            if value is not None:
+    
+    # Check v for being path-type-default dictionary
+    # If this is the case, use it for transformation, otherwise recurse
+    if ('path' in v) and ('type' in v):
+        # remove trailing dot from last recursion in order to avoid empty key
+        prefix = prefix.strip(".")
+        print("Element dictionary {} with prefix {}".format(v, prefix))
+        value = find_path(v.get('path'), resp)
+        
+        if (value is None) and ('default' in v):
+            print("Setting default value '{}' for path {}.".format(v.get('default'), v.get('path')))
+            value = v.get('default')
+       
+        # skip the mapping of missing key:value pairs in the response
+        if value is not None:
+            casted_value = value
+            if v.get('type') == 'string': 
+                print("Casting value '{}' to string.".format(value))   
                 casted_value = cast_to_string(value)
-            #print("value", value, type(value))
-            #print("casted value",casted_value, type(casted_value))
-                output = (os.path.splitext(newprefix)[0], casted_value)
-                #print("output", output)
-                append_to.append(output)
+            elif v.get('type') == 'integer':
+                print("Checking value {} for integer.".format(value))
+                if isinstance(value, int) == False:
+                    if 'default' in v:
+                        print("Value '{}' is no integer. Applying default value '{}'.".format(value, v.get('default')))
+                        casted_value = v.get('default')
+                    else:
+                        print("Value '{}' is no integer, no default defined. Applying value 0.".format(value))
+                        casted_value = 0 
+                          
+            output = (prefix, casted_value)
+            append_to.append(output)
+    else:
+        if isinstance(v, dict):
+            for k, v2 in v.items():
+                p2 = "{}{}.".format(prefix, k)
+                __dict2list(v2, resp, p2, append_to)
+
+        elif isinstance(v, list):
+            for i, v2 in enumerate(v):
+                p2 = "{}{}.".format(prefix, i)
+                __dict2list(v2, resp, p2, append_to)
 
 
 def dict2list(v, v2, prefix=''):
@@ -174,20 +220,20 @@ def dict2list(v, v2, prefix=''):
 
 def cast_to_string(elem):
     if isinstance(elem, dict):
-        #print("WARNING: Unexpected dictionary. Please check. Casting {} to string".format(elem))
+        # print("WARNING: Unexpected dictionary. Please check. Casting {} to string".format(elem))
         elem = str(elem)
 
     elif isinstance(elem, list):
         for i in range(len(elem)):
             if not isinstance(elem[i], str):
-                #print("WARNING: Casting element {} of list {} to string because it was {}".format(elem[i],
+                # print("WARNING: Casting element {} of list {} to string because it was {}".format(elem[i],
                 #                                                                                  elem,
                 #                                                                                  type(elem[i])))
                 elem[i] = str(elem[i])
     else:
         # assuming that if not a list, can only be a single element
         if not isinstance(elem, str):
-            #print("WARNING: Casting {} to string because it was {}".format(elem, type(elem)))
+            # print("WARNING: Casting {} to string because it was {}".format(elem, type(elem)))
             elem = str(elem)
 
     return elem

@@ -6,20 +6,13 @@ import mapping_functions
 import pprint
 import sys
 
-HOST = 'episteme2.scc.kit.edu'
-PORT = '8080'
-URL = os.path.join('http://' + HOST + ':' + PORT, 'api/v1/dataresources')
-
-payload = "{\n \t\"resourceType\": {\n \t\t\"typeGeneral\":\"TEXT\"\n \t}\n}"
-headers = {'Content-Type': "application/json", 'cache-control': "no-cache"}
-
-size = 20
-page = 0
-
 schema = sys.argv[1]
 input_folder = sys.argv[2]
 output_folder = sys.argv[3]
 
+#schema = "schema-for-json-response.json" 
+#input_folder = "./episteme/" 
+#output_folder = "./output/"
 
 for manuscript in os.listdir(input_folder):
     print("\n \n \n MAPPING DOCUMENT: {} \n \n \n".format(manuscript))

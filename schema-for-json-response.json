@@ -74,11 +74,11 @@
     "original Date":{
       "from":{
         "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.history.origin.origDate.from",
-        "type": "string"
+        "type": "integer"
       },
       "to":{
         "path": "TEI.teiHeader.fileDesc.sourceDesc.msDesc.history.origin.origDate.to",
-        "type": "string"
+        "type": "integer"
       }
     }
   },
