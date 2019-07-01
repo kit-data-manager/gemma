@@ -71,9 +71,9 @@ def find_path(path, diz):
     else:
         print("Element at position '{}' is {}.".format(pos, diz))
     
-    if isinstance(diz, list):
-        print("Result {} is a list. Building string representation.".format(diz))
-        return str(diz)
+    # if isinstance(diz, list):
+    #    print("Result {} is a list. Building string representation.".format(diz))
+    #    return str(diz)
          
     # return plain diz in all other cases  
     return diz
@@ -190,7 +190,15 @@ def __dict2list(v, resp, prefix, append_to):
                     else:
                         print("Value '{}' is no integer, no default defined. Applying value 0.".format(value))
                         casted_value = 0 
-                          
+            elif v.get('type') == 'array':
+                print("Transforming value {} to type array.".format(value))
+                if isinstance(value, list) == True:
+                    print("Value '{}' is a list, using it unmodified.".format(value))
+                    casted_value = value;
+                else:
+                    print("Value '{}' is no list, using empty value.".format(value))
+                    casted_value = "[]"
+                        
             output = (prefix, casted_value)
             append_to.append(output)
     else:
