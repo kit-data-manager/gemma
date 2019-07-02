@@ -37,7 +37,6 @@ def find_path(path, diz):
             print("No or empty dictionary returned from last iteration. Skipping from position '{}'.".format(pos))
             diz = None
             break
-
         if isinstance(diz, dict):
             print("Accessing element '{}' in dictionary {}".format(pos, diz))
             diz = diz.get(pos)
@@ -193,8 +192,8 @@ def __dict2list(v, resp, prefix, append_to):
             elif v.get('type') == 'array':
                 print("Transforming value {} to type array.".format(value))
                 if isinstance(value, list) == True:
-                    print("Value '{}' is a list, using it unmodified.".format(value))
-                    casted_value = value;
+                    print("Value '{}' is a list, applying optional transformation.".format(value))
+                    casted_value = transformList(value, v.get('include'))
                 else:
                     print("Value '{}' is no list, using empty value.".format(value))
                     casted_value = "[]"
@@ -213,6 +212,35 @@ def __dict2list(v, resp, prefix, append_to):
                 __dict2list(v2, resp, p2, append_to)
 
 
+def transformList(list, includeList=None):
+    """
+    Transform the provided list by removing items whose keys
+    are not listed in argument includeList. It the provided list
+    does not consist of dictionary elements or if attributeList is 
+    None, the argument list is returned unmodified.
+    :param list: A list which should contain dictionaries.
+    :param includeList: A list of strings containing item keys which should be 
+    used from the provided list.
+    """
+    
+    if(includeList == None): return list
+
+    print("Extracting items {} from list {}.".format(includeList, list))
+
+    result = []
+    for listItem in list:
+        modList = {} #the temporary dictionary holding all acceptable items
+        if isinstance(listItem, dict):
+            for key, value in listItem.items(): #for dictionaries iterate through all items
+                if key in includeList:
+                    modList[key] = value #add key and value to temporary dictionary
+        else:
+            modList = listItem #listItem is no dictionary, e.g. a string, just reuse it       
+        result.append(modList) #append temporary dictionary (or unmodified list) to result
+        
+    return result
+    
+    
 def dict2list(v, v2, prefix=''):
     """
     Function to flatten a nested dictionary into a list of tuples.
