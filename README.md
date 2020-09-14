@@ -1,11 +1,11 @@
 # Gemma
 
-Gemma is a GEneric Metadata Mapper written in Python. It allows to map metadata in JSON or XML format into another representation, e.g. for indexing at Elastic, using a custom mapping description.
+Gemma is a Generic Metadata Mapper written in Python. It allows to map metadata in JSON or XML format into another representation, e.g. for indexing at Elastic, using a custom mapping description.
 
 ## Manuscript metadata mapping
 
 Useful files:
-- `schema-for-xml-response.json` contains the schema to map the xml response. The mapping has been done according to the TEI, suggested by Germaine;
+- `./sample/schema-for-xml-response.json` contains the schema to map the xml response. The mapping has been done according to the TEI, suggested by Germaine;
 - `mapping_functions.py` contains the functions needed to run the mapping of the metadata, in order to create a JSON document ready to be indexed by elasticSearch.
 
 ## Ubuntu installation and settings
@@ -50,7 +50,7 @@ To run the code:
 ### Create the JSON file for elasticSearch
 The code creates a JSON file for each manuscript, extracting the relevant metadata (suggested by Germaine) from the XML response file.
 These metadata can be then indexed in elasticSearch.
-The mapping is done following a schema, provided by the `schema-for-xml-response.json` file.
+The mapping is done following a schema, provided by the `./sample/schema-for-xml-response.json` file.
 The mapping cannot be granular for some entries, due to a couple of reasons:
 1. In some files, the content is in the expected key, while in some others it is in a more nested key. For example, it could be in `source.settlement` or in `source.settlement.rd.#text`. This applies to:
 	- `source.settlement`
@@ -65,7 +65,7 @@ To run the code:
 
 	python3 mapping.py $schema $input_folder $output_folder
 
-where `$schema` is the schema file, in this case `schema-for-xml-response.json`, `$input_folder` is the folder where the XML responses are, `$output_folder` is the folder (which must already exist) where the JSON files will be created.
+where `$schema` is the schema file, in this case `./sample/schema-for-xml-response.json`, `$input_folder` is the folder where the XML responses are, `$output_folder` is the folder (which must already exist) where the JSON files will be created.
 The output JSON files are named as the XML file + the extension `.elastic.json`, so for example `manuscript_id.xml.elastic.json`.
 
 ## To be fixed in version 2:
