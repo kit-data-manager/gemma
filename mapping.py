@@ -10,7 +10,7 @@ schema = sys.argv[1]
 input_folder = sys.argv[2]
 output_folder = sys.argv[3]
 
-#schema = "schema-for-json-response.json" 
+#schema = "./sample/schema-for-json-response.json" 
 #input_folder = "./episteme/" 
 #output_folder = "./output/"
 

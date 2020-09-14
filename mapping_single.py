@@ -8,7 +8,7 @@ import sys
 
 schema = sys.argv[1] 
 #schema = "simple-schema.json" 
-#schema = "schema-for-json-response.json" 
+#schema = "./sample/schema-for-json-response.json" 
 
 input_file = sys.argv[2]
 #input_file = "simple.json" 
