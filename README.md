@@ -138,5 +138,5 @@ To search by exact match of a sentence, write on Kibana dashboard:
         }
 
 To select the index name, please consult the JSON schema `schema-for-xml-response.json`.
-It works also with Greek, special French and German letters. 
+It works also with Greek, special French, and German letters. 
 
